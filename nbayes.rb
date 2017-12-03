@@ -24,10 +24,10 @@ def generate_train_test_datasets(source_filename, text_train, text_predict)
 
 		# adds the userScreen name to the user_ids array.
 		if row["Rating"] != nil
-	 		text_train << [row["tweetID"],row["userScreen"],row["tweetText"], row["Rating"]]
+	 		text_train << [row["tweetID"],row["userScreen"],row["tweetText"], row["Rating"], row["tweetFavoriteCt"]]
 	 	else
 	 		unless text_predict.include?(row["tweetText"])
-				text_predict << [row["tweetID"],row["userScreen"],row["tweetText"]]
+				text_predict << [row["tweetID"],row["userScreen"],row["tweetText"], row["tweetFavoriteCt"]]
 			end
 	 	end
 	end
@@ -45,7 +45,7 @@ def train_classifier(nbayes_instance, text_train)
 	end
 end
 
-def produce_results(results_file, text_train, text_predict, nbayes_instance)
+def produce_results_for_tweet(results_file, text_train, text_predict, nbayes_instance)
 	
 
 	#Open a new csv file and load it with the trained text and the predictions
@@ -54,7 +54,7 @@ def produce_results(results_file, text_train, text_predict, nbayes_instance)
 
 		text_train.each do |ttrain|
 
-			csv << ["Training",ttrain[0], ttrain[1],ttrain[2], ttrain[3]]
+			csv << ["Training",ttrain[0], ttrain[1],ttrain[2], ttrain[3],ttrain[4]]
 
 		end
 
@@ -68,12 +68,15 @@ def produce_results(results_file, text_train, text_predict, nbayes_instance)
 
 			
 
-			csv << ["Predicted",tpredict[0],tpredict[1],tpredict[2] ,result.max_class, nbayes_prob["Positive"], nbayes_prob["Negative"], nbayes_prob["Neutral"]]
+			csv << ["Predicted",tpredict[0],tpredict[1],tpredict[2] ,result.max_class, nbayes_prob["Positive"], nbayes_prob["Negative"], nbayes_prob["Neutral"],tpredict[3]]
 
 		end
 
 	end
 end
+
+
+
 
 # Initialise the training array to hold all the tweets already classified
 # Initialise the predict array to hold all the tweets to be classified
@@ -83,11 +86,14 @@ text_train =[]
 
 text_predict =[]
 
+network_array = []
+
 @nbayes = NBayes::Base.new
 
 generate_train_test_datasets("file_name2utf.csv", text_train, text_predict)
 train_classifier(@nbayes, text_train)
 produce_results("bananas2", text_train, text_predict, @nbayes)
+
 
 
 
