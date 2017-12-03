@@ -1,23 +1,13 @@
 # require_relative 'youtube'
 require_relative 'init_twitter'
 
-# require 'google/apis'
-# require 'google/apis/youtube_v3'
-# require 'googleauth'
-# require 'googleauth/stores/file_token_store'
 require 'pry'
 require 'fileutils'
 require 'json'
 require 'twitter'
 require 'CSV'
 
- 
-client = Twitter::REST::Client.new do |config|
-  config.consumer_key        = "weQxZVTiuGuMM2Pd1qPOEYhNO"
-  config.consumer_secret     = "zXYECjZ0NhmoN0WbUFRfLNrsQLQYrcw7BsY3jTiVUueR4oaNVN"
-  config.access_token        = "311476681-BPCvNHwgK1bXYOVtHctdSqk5YBSJitF7KB8PAyqf"
-  config.access_token_secret = "JBJ3JBLmW2qeIBp5LaOmakDzwhvNBJPBRdGve94CYh9m3"
-end
+
 
 # Finding Friends : https://gist.github.com/ronhornbaker/7817176
 
